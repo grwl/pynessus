@@ -76,9 +76,11 @@ class Skanner(object):
                         sys.stdout.write("[+] Current progress : %0.2f%%\r" % percentage)
                         sys.stdout.flush()
                         time.sleep(5)
-                    if scan.status == "completed":
+                    time.sleep(5) # FIXME give nessus little time to finish internal tasks
+                    #if scan.status == "completed":
+                    if True: # FIXME
                         r = nessus.Report()
-                        r.id = scan.uuid
+                        r.id, r.name = scan.uuid, scan.uuid # FIXME nmapscan.py does this. looks broken to me. perhals load_report() should be fixed to only expect id.
                         path = r.download()
                         if path is not None:
                             self.info("Report downloaded to %s" % path)
