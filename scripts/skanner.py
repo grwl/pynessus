@@ -68,11 +68,13 @@ class Skanner(object):
                     # scan launched, monitoring progress ...
                     self.info("Scan has been launched, waiting for completion...")
                     print "[+] Scan has been launched, waiting for completion..."
-                    status, percentage = scan.progress()
-                    while status == "running":
+
+                    while True:
+                        percentage = scan.progress()
+                        if percentage >= 100:
+                            break
                         sys.stdout.write("[+] Current progress : %0.2f%%\r" % percentage)
                         sys.stdout.flush()
-                        status, percentage = scan.progress()
                         time.sleep(5)
                     if scan.status == "completed":
                         r = nessus.Report()
